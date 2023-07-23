@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor// 파라미터가 없는 생성자를 생성한다.
 public class BoardRequestDto {
 	private Long id;
 	private String title;
