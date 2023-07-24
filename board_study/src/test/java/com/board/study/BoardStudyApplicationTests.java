@@ -38,10 +38,39 @@ class BoardStudyApplicationTests {
 	
 	void findAll() {
 		List<BoardResponseDto> list = boardService.findAll();
+		
+		if(list != null) {
+			System.out.println("# success findAll() : "+ list.toString());
+		}else {
+			System.out.println("fail findAll() ~");
+		}
 	}
 	
 	void findById(Long id) {
+		BoardResponseDto info = boardService.findById(id);
 		
+		if( info != null) {
+			System.out.println("# success findById():"+ info.toString());
+		}else {
+			System.out.println("# fail findById()~");
+		}
+	}
+	
+	void updateBoard(Long id) {
+		BoardRequestDto boardRequestDto = new BoardRequestDto();
+		
+		boardRequestDto.setId(id);
+		boardRequestDto.setTitle("업데이트 제목");
+		boardRequestDto.setContent("업데이트내용");
+		boardRequestDto.setRegisterId("작성자");
+		
+		int result = boardService.updateBoard(boardRequestDto);
+		
+		if(result >0) {
+			System.out.println("# success updateBoard()~");
+		}else {
+			System.out.println(" # fail updateBaord()~");
+		}
 	}
 
 }
