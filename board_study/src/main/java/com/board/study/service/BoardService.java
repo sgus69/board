@@ -61,4 +61,7 @@ public class BoardService {
 	public void deleteById(Long id) {
 		boardRepository.deleteById(id);
 	}
+	public void deleteAll(Long[] deleteId) {
+		boardRepository.deleteBoard(deleteId);
+	}
 }
