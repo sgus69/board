@@ -1,6 +1,6 @@
 package com.board.study;
 
-import java.util.List;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ class BoardStudyApplicationTests {
 		
 		if(result >0) {
 			System.out.println("#success save()~");
-			findAll();
+			findAll(null, null);
 			findById(result);
 		}else {
 			System.out.println("# fail save()~");
@@ -36,8 +36,8 @@ class BoardStudyApplicationTests {
 			
 	}
 	
-	void findAll() {
-		List<BoardResponseDto> list = boardService.findAll();
+	void findAll(Integer page, Integer size) {
+		HashMap<String, Object> list = boardService.findAll(page, size);
 		
 		if(list != null) {
 			System.out.println("# success findAll() : "+ list.toString());

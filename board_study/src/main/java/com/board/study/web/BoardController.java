@@ -1,5 +1,7 @@
 package com.board.study.web;
 
+import java.util.Arrays;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,8 @@ public class BoardController {
 	private final BoardService boardService;
 	
 	@GetMapping("/board/list")
-	public String getBoardListPage(Model model, @RequestParam(required=false, defaultValue ="0")Integer page,
+	public String getBoardListPage(Model model,
+	@RequestParam(required=false, defaultValue ="0")Integer page,
 	@RequestParam(required = false, defaultValue = "5") Integer size)throws Exception{
 		
 		try {
@@ -32,15 +35,15 @@ public class BoardController {
 	}
 	
 	@GetMapping("/board/write")
-	public String getBoardWritePage(Model model, BoardRequestDto req) {
+	public String getBoardWritePage(Model model, BoardRequestDto boardRequestDto) {
 		return "/board/write";
 	}
 	
 	@GetMapping("/board/view")
-	public String getBoardViewPage(Model model, BoardRequestDto req) throws Exception{
+	public String getBoardViewPage(Model model, BoardRequestDto boardRequestDto) throws Exception{
 		try {
-			if(req.getId()!= null) {
-				model.addAttribute("info", boardService.findById(req.getId()));
+			if(boardRequestDto.getId()!= null) {
+				model.addAttribute("info", boardService.findById(boardRequestDto.getId()));
 			}
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
@@ -50,12 +53,13 @@ public class BoardController {
 	}
 	
 	@PostMapping("/board/write/action")
-	public String boardWriteAction(Model model, BoardRequestDto req) throws Exception{
+	public String boardWriteAction(Model model, BoardRequestDto boardRequestDto) throws Exception{
+		System.out.println("REQ:: "+ boardRequestDto.getTitle());
 		
 		try {
-			Long result = boardService.save(req);
+			Long result = boardService.save(boardRequestDto);
 			
-			if(result <0 ) {
+			if(result <1 ) {
 				throw new Exception("#Exception boardWriteAction!");
 			}
 		} catch (Exception e) {
@@ -66,10 +70,10 @@ public class BoardController {
 	}
 	
 	@PostMapping("/board/view/action")
-	public String boardViewAction(Model model, BoardRequestDto req)throws Exception{
-		
+	public String boardViewAction(Model model, BoardRequestDto boardRequestDto)throws Exception{
+		System.out.println("REQ:: "+ boardRequestDto.getTitle());
 			try {
-				int result = boardService.updateBoard(req);
+				int result = boardService.updateBoard(boardRequestDto);
 				
 				if(result <1) {
 					throw new Exception("#Exception boardViewAction!");
@@ -77,11 +81,11 @@ public class BoardController {
 			} catch (Exception e) {
 				throw new Exception(e.getMessage());
 			}
-		return "board/view";
+		return "redirect:/board/list";
 	}
 	
-	@PostMapping("/baord/view/delete")
-	public String boardDeleteAction(Model model, BoardRequestDto req,
+	@PostMapping("/board/view/delete")
+	public String boardViewDeleteAction(Model model,
 			@RequestParam()Long id)throws Exception{
 		try {
 			
@@ -94,6 +98,7 @@ public class BoardController {
 	
 	@PostMapping("/board/delete")
 	public String boardDeleteAction(Model model, @RequestParam()Long[]deleteId)throws Exception{
+		System.out.println("deleteId::"+ Arrays.toString(deleteId));
 		try {
 			boardService.deleteAll(deleteId);
 		} catch (Exception e) {

@@ -22,4 +22,9 @@ public class BoardRequestDto {
 					.registerId(registerId)
 					.build();
 	}
+	@Override
+	public String toString() {
+		return "BoardRequestDto [id=" + id + ", title=" + title + ", content=" + content + ", registerId=" + registerId
+				+ "]";
+	}
 }
