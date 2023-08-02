@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.board.study.dto.board.BoardRequestDto;
 import com.board.study.dto.board.BoardResponseDto;
 import com.board.study.entity.board.Board;
-import com.board.study.entity.board.BoardRespository;
+import com.board.study.entity.board.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BoardService {
 
-	private final BoardRespository boardRepository;
+	private final BoardRepository boardRepository;
 	
 	@Transactional
 	public Long save(BoardRequestDto boardSaveDto) {
