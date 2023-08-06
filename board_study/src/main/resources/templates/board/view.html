@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymleaf.org">
-<head>
-	<title>boardView</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<link rel="stylesheet" href="/css/lib/bootstrap.min.css">
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" 
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 	  layout:decorate="layout/default_layout">
+ 	  <!-- layout Content -->
+<th:block layout:fragment="content">
 	<div class="container">
 		<h1>Board View.</h1>
 		<form id="frm" action="/board/view/action" method="post">
@@ -60,5 +56,5 @@
 			}
 		}
 	</script>
-</body>
+</th:block>
 </html>
