@@ -20,12 +20,28 @@
 					<input type="text" class="form-control" name="registerId">
 				</div>		
 				<button type="button" class="btn btn-success" onclick="javascript:location.href='/board/list'">Previous</button>	
-				<button type="submit" class="btn btn-primary" >Submit</button>	
+				<button type="button" class="btn btn-primary" onclick="fnSubmit()">Submit</button>	
 			</form>
 		</div>
 		<script th:inline="javascript">
-		
-		
+			let frm = $("#frm");
+			
+			function fnSubmit(){
+				frm.submit();
+			}
+			$(function(){
+				frm.vaildate({
+					messages:{
+						title:{
+							required:"Custom required, Please enter a title"
+						}
+					},
+					submitHandler:function(form){
+						//subcmit Action...
+						form.submit();
+					}
+				})
+			})
 		</script>
 	</th:block>
 </html>
