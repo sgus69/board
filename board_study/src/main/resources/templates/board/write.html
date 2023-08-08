@@ -27,13 +27,29 @@
 			let frm = $("#frm");
 			
 			function fnSubmit(){
+				
 				frm.submit();
 			}
 			$(function(){
-				frm.vaildate({
+				frm.validate({
+					rules:{
+						title:{
+							minlength:2,
+							maxlength:60
+						},
+						content:{
+							maxlength:1300
+						}
+					},
 					messages:{
 						title:{
-							required:"Custom required, Please enter a title"
+							required:"제목을 입력해 주세요."
+							,minlength:"최소 2글자 이상 입력해 주세요."
+							,maxlength:"60자 이내로 입력해 주세요."
+						},
+						content:{
+							required:"내용을 입력해 주세요."
+							,maxlength:"1300자 이내로 입력해 주세요."
 						}
 					},
 					submitHandler:function(form){
