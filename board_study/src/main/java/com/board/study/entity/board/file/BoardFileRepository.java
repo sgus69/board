@@ -32,5 +32,5 @@ public interface BoardFileRepository extends JpaRepository<BoardFile, Long> {
 	@Transactional
 	@Modifying
 	@Query(value = DELETE_BOARD_FILE_YN, nativeQuery = true)
-	public int deleteBoardFileYn(@Param("boardList") Long[] boardIdList);
+	public int deleteBoardFileYn(@Param("boardIdList") Long[] boardIdList);
 }

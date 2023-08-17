@@ -34,12 +34,12 @@ public class BoardFileService {
 		return boardFileRepository.findByBoardId(boardId);
 	}
 	
-	public boolean uploadFile(MultipartHttpServletRequest muliRequest, Long boardId)throws Exception{
+	public boolean uploadFile(MultipartHttpServletRequest multiRequest, Long boardId)throws Exception{
 		
 		if(boardId == null)throw new NullPointerException("Empty BOARD_ID.");
 		
 		//파라미터 이름을 키로 파라미터에 해당하는 파일 정보를 값으로하는 MAP을 가져온다.
-		Map<String, MultipartFile> files = muliRequest.getFileMap();
+		Map<String, MultipartFile> files = multiRequest.getFileMap();
 		
 		//files.entrySet()의 요소를 읽어온다.
 		Iterator<Entry<String, MultipartFile>> itr =
@@ -47,7 +47,7 @@ public class BoardFileService {
 		
 		MultipartFile mFile;
 		
-		String saveFilePath = "", randomFileName = "";
+		String savaFilePath = "", randomFileName = "";
 		
 		Calendar cal = Calendar.getInstance();
 		
@@ -63,12 +63,13 @@ public class BoardFileService {
 				String filePath = "C:\\study\\demo";
 				
 				//파일 업로드 경로 + 현재 년월(월별관리)
-				filePath = filePath + File.separator + String.valueOf(cal.get(Calendar.YEAR)) + File.separator + String.valueOf(cal.get(Calendar.MONTH) + 1);
+				filePath = filePath + File.separator + 
+							String.valueOf(cal.get(Calendar.YEAR)) + File.separator + String.valueOf(cal.get(Calendar.MONTH) + 1);
 				randomFileName = "File_"+ RandomStringUtils.random(8, 0, 0, false, true, null, new SecureRandom());
 				String realFileName = mFile.getOriginalFilename();
 				String fileExt = realFileName.substring(realFileName.lastIndexOf(".")+1);
 				String saveFileName = randomFileName + "." + fileExt;
-				saveFilePath= filePath + File.separator + saveFileName;
+				String saveFilePath= filePath + File.separator + saveFileName;
 			
 			
 				File filePyhFolder = new File(filePath);
@@ -100,11 +101,11 @@ public class BoardFileService {
 						_exist = new File(dictFile).isFile();
 						
 						if(!_exist) {
-							saveFilePath = dictFile;
+							savaFilePath = dictFile;
 						}
 					}
 					
-					mFile.transferTo(new File(saveFilePath));
+					mFile.transferTo(new File(savaFilePath));
 				}else {
 					/*생성한 파일 객체를 업로드 처리하지 않으면 임시파일에 저장된 파일이 자동적으로 삭제되기 때문에
 					transferTo(File f) 메서드를 이용해서 업로드 처리한다.*/
