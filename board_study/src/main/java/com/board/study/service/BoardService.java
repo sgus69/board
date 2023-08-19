@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.board.study.dto.board.BoardRequestDto;
 import com.board.study.dto.board.BoardResponseDto;
@@ -22,10 +23,18 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
 
 	private final BoardRepository boardRepository;
+	private final BoardFileService boardFileService;
 	
 	@Transactional
-	public Long save(BoardRequestDto boardSaveDto) {
-		return boardRepository.save(boardSaveDto.toEntity()).getId();
+	public boolean save(BoardRequestDto boardRequestDto, MultipartHttpServletRequest multiRequest) throws Exception {
+		
+		Board result = boardRepository.save(boardRequestDto.toEntity());
+		boolean resultFlag = false;
+		if(result != null) {
+			boardFileService.uploadFile(multiRequest, result.getId());
+			resultFlag = true;
+		}
+		return resultFlag;
 	}
 	
 	/**
@@ -51,20 +60,41 @@ public class BoardService {
 	
 	}
 	
-	public BoardResponseDto findById(Long id) {
+	public HashMap<String, Object> findById(Long id)throws Exception {
+		
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
 		boardRepository.updateBoardReadCntInc(id);
-		return new BoardResponseDto(boardRepository.findById(id).get());
+		
+		BoardResponseDto info = new BoardResponseDto(boardRepository.findById(id).get());
+		
+		resultMap.put("info", info);
+		resultMap.put("fileList", boardFileService.findByBoardId(info.getId()));
+		
+		return resultMap;
 	}
 	
-	public int updateBoard(BoardRequestDto boardRequestDto) {
-		return boardRepository.updateBoard(boardRequestDto);
+	public boolean updateBoard(BoardRequestDto boardRequestDto, MultipartHttpServletRequest multiRequest) throws Exception {
+		
+		int result = boardRepository.updateBoard(boardRequestDto);
+		
+		boolean resultFlag = false;
+		
+		if(result > 0) {
+			boardFileService.uploadFile(multiRequest, boardRequestDto.getId());
+			resultFlag = true;
+		}
+		
+		return resultFlag;
 	}
 	
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
+		Long[] idArr = {id};
+		boardFileService.deleteBoardFileYn(idArr);
 		boardRepository.deleteById(id);
 	}
-	public void deleteAll(Long[] deleteId) {
-		System.out.println("service+delId:: "+ Arrays.toString(deleteId));
+	public void deleteAll(Long[] deleteId) throws Exception {
+		boardFileService.deleteBoardFileYn(deleteId);
 		boardRepository.deleteBoard(deleteId);
 	}
 }
