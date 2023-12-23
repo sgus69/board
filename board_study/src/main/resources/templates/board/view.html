@@ -150,8 +150,7 @@
 		
 		function fnSubmit() {
 			if (confirm("Do you want to edit it?")) {
-				$("#frm").submit();
-				location.reload(true);
+				frm.submit();
 			}
 	    }
 		
@@ -170,18 +169,14 @@
 							data: { idArr: deleteFileIdArr },
 							dataType: "json",
 							success: function(r) {
-								alert("success");
-								console.log("r:: " + r);
-								console.log("r:: " + r.result);
 								if (r.result) {
-									alert("if문");
 									form.submit();
 								} else {
 									alert("A problem occurred, and progress is interrupted. Try again in a few minutes.");
 								}
 							},
 							error: function(e) {
-								console.log(e);
+								console.log("e:: "+JSON.stringify(e));
 							}
 						});
 	            	} else {

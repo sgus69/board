@@ -108,7 +108,6 @@ public class BoardFileContoller {
 		}
 	}
 	
-	@ResponseBody
 	@PostMapping("/file/delete.ajax")
 	public String updateDeleteYn(Model model, BoardFileRequestDto boardFileRequestDto)throws Exception{
 		try {
